@@ -17,7 +17,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      "groups"={"categories_read"}
  * }
  * )
- * @ApiFilter(SearchFilter::class)
+ * 
  * @ORM\Entity(repositoryClass=CategorieRepository::class)
  */
 class Categorie
@@ -43,10 +43,11 @@ class Categorie
     private $sousCategories;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Collecte::class, inversedBy="categories")
+     * @ORM\OneToMany(targetEntity=Collecte::class, mappedBy="categories")
      * @Groups({"categories_read"})
      */
     private $collectes;
+
 
 
     public function __construct()
@@ -114,6 +115,7 @@ class Categorie
     {
         if (!$this->collectes->contains($collecte)) {
             $this->collectes[] = $collecte;
+            $collecte->setCategories($this);
         }
 
         return $this;
@@ -121,8 +123,14 @@ class Categorie
 
     public function removeCollecte(Collecte $collecte): self
     {
-        $this->collectes->removeElement($collecte);
+        if ($this->collectes->removeElement($collecte)) {
+            // set the owning side to null (unless already changed)
+            if ($collecte->getCategories() === $this) {
+                $collecte->setCategories(null);
+            }
+        }
 
         return $this;
     }
+
 }

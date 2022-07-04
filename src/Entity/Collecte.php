@@ -23,7 +23,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *       "groups"={"collects_read"}
  * }
  * )
- * @ApiFilter(SearchFilter::class)
+ * @ApiFilter(SearchFilter::class,properties={"categories.Libelle"})
  */
 class Collecte
 {
@@ -34,12 +34,6 @@ class Collecte
      * @Groups({"collects_read","categories_read"})
      */
     private $id;
-
-
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $Inventaire;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -52,12 +46,6 @@ class Collecte
      * @Groups({"collects_read","categories_read"})
      */
     private $utilisateurs;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Categorie::class, mappedBy="collectes")
-     * @Groups({"collects_read"})
-     */
-    private $categories;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -94,6 +82,12 @@ class Collecte
      */
     private $collecteur;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="collectes")
+     * @Groups({"collects_read"})
+     */
+    private $categories;
+
    
 
     public function __construct()
@@ -106,17 +100,6 @@ class Collecte
         return $this->id;
     }
 
-    public function getInventaire(): ?string
-    {
-        return $this->Inventaire;
-    }
-
-    public function setInventaire(?string $Inventaire): self
-    {
-        $this->Inventaire = $Inventaire;
-
-        return $this;
-    }
 
     public function getDetailAdresse(): ?string
     {
@@ -138,33 +121,6 @@ class Collecte
     public function setUtilisateurs(?Utilisateur $utilisateurs): self
     {
         $this->utilisateurs = $utilisateurs;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Categorie>
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Categorie $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addCollecte($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Categorie $category): self
-    {
-        if ($this->categories->removeElement($category)) {
-            $category->removeCollecte($this);
-        }
 
         return $this;
     }
@@ -237,6 +193,18 @@ class Collecte
     public function setCollecteur(?Collecteur $collecteur): self
     {
         $this->collecteur = $collecteur;
+
+        return $this;
+    }
+
+    public function getCategories(): ?Categorie
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?Categorie $categories): self
+    {
+        $this->categories = $categories;
 
         return $this;
     }

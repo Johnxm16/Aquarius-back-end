@@ -22,7 +22,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *       "groups"={"users_read"}
  * }
  * )
- * @ApiFilter(SearchFilter::class)
+ * @ApiFilter(SearchFilter::class,properties={""})
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
 class Utilisateur implements UserInterface

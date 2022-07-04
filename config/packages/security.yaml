@@ -9,10 +9,17 @@ security:
   # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
   providers:
     # used to reload user from session & other features (e.g. switch_user)
-    app_user_provider:
+    app_utilisateur_provider:
+      entity:
+        class: App\Entity\Utilisateur
+        property: telephone
+    app_collecteur_provider:
       entity:
         class: App\Entity\Collecteur
         property: Telephone
+    app_users:
+        chain:
+            providers: ['app_utilisateur_provider', 'app_collecteur_provider']
     # used to reload user from session & other features (e.g. switch_user)
   firewalls:
     dev:
@@ -26,6 +33,7 @@ security:
     login:
       pattern: ^/api/login
       stateless: true
+      provider: app_users
       anonymous: true
       json_login:
         check_path: /api/login_check # or api_login_check as defined in config/routes.yaml
@@ -35,12 +43,13 @@ security:
       pattern: ^/api
       stateless: true
       anonymous: true
+      provider: app_users
       guard:
         authenticators:
           - lexik_jwt_authentication.jwt_token_authenticator
     main:
       anonymous: lazy
-      provider: app_user_provider
+      provider: app_users
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#firewalls-authentication
