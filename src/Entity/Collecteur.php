@@ -15,10 +15,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ORM\Entity(repositoryClass=CollecteurRepository::class)
  * @ApiResource(
- *  attributes={
- *      "pagination_enabled"=true,
- *      "pagination_items_per_page"=20
- *  },
  *  normalizationContext={
  *       "groups"={"collecteur_read"}
  * }
@@ -90,16 +86,16 @@ class Collecteur implements UserInterface
     private $Agence;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
-     * @Groups({"collecteur_read"})
-     */
-    private $NombreCollecte;
-
-    /**
      * @ORM\OneToMany(targetEntity=Collecte::class, mappedBy="collecteur")
      * @Groups({"collecteur_read"})
      */
     private $collecte;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"collecteur_read","collects_read"})
+     */
+    private $Status;
 
     public function __construct()
     {
@@ -259,18 +255,6 @@ class Collecteur implements UserInterface
         return $this;
     }
 
-    public function getNombreCollecte(): ?string
-    {
-        return $this->NombreCollecte;
-    }
-
-    public function setNombreCollecte(?string $NombreCollecte): self
-    {
-        $this->NombreCollecte = $NombreCollecte;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Collecte>
      */
@@ -297,6 +281,18 @@ class Collecteur implements UserInterface
                 $collecte->setCollecteur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->Status;
+    }
+
+    public function setStatus(?string $Status): self
+    {
+        $this->Status = $Status;
 
         return $this;
     }

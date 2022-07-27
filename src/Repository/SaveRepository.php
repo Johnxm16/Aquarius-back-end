@@ -2,30 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\SousCategorie;
+use App\Entity\Save;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method SousCategorie|null find($id, $lockMode = null, $lockVersion = null)
- * @method SousCategorie|null findOneBy(array $criteria, array $orderBy = null)
- * @method SousCategorie[]    findAll()
- * @method SousCategorie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Save|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Save|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Save[]    findAll()
+ * @method Save[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SousCategorieRepository extends ServiceEntityRepository
+class SaveRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, SousCategorie::class);
+        parent::__construct($registry, Save::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(SousCategorie $entity, bool $flush = true): void
+    public function add(Save $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -37,7 +37,7 @@ class SousCategorieRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(SousCategorie $entity, bool $flush = true): void
+    public function remove(Save $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -46,7 +46,7 @@ class SousCategorieRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return SousCategorie[] Returns an array of SousCategorie objects
+    //  * @return Save[] Returns an array of Save objects
     //  */
     /*
     public function findByExampleField($value)
@@ -63,7 +63,7 @@ class SousCategorieRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?SousCategorie
+    public function findOneBySomeField($value): ?Save
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')

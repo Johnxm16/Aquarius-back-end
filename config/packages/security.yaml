@@ -4,7 +4,8 @@ security:
       algorithm: auto
     App\Entity\Collecteur:
       algorithm: auto
-
+    App\Entity\Administrateur:
+      algorithm: auto
 
   # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
   providers:
@@ -17,9 +18,18 @@ security:
       entity:
         class: App\Entity\Collecteur
         property: Telephone
+    app_administrateur_provider:
+      entity:
+        class: App\Entity\Administrateur
+        property: login
     app_users:
-        chain:
-            providers: ['app_utilisateur_provider', 'app_collecteur_provider']
+      chain:
+        providers:
+          [
+            'app_utilisateur_provider',
+            'app_collecteur_provider',
+            'app_administrateur_provider',
+          ]
     # used to reload user from session & other features (e.g. switch_user)
   firewalls:
     dev:
@@ -59,16 +69,15 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/api/adresses, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api/collectes, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/collectes, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/profiles, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/annuler_collectes, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/supprimer_comptes, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/profiles, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api/annuler_collectes, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api/supprimer_comptes, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api/sous_categories, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api/profiles, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/collecteurs, roles: IS_AUTHENTICATED_FULLY }
     - {
         path: ^/api/utilisateurs,
-        roles: IS_AUTHENTICATED_ANONYMOUSLY,
+        roles: IS_AUTHENTICATED_FULLY,
         methods: [GET, PUT, PATH, DELETE],
       }
     # - { path: ^/profile, roles: ROLE_USER }

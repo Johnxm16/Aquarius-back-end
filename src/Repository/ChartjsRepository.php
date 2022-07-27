@@ -2,30 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\Adresse;
+use App\Entity\Chartjs;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Adresse|null find($id, $lockMode = null, $lockVersion = null)
- * @method Adresse|null findOneBy(array $criteria, array $orderBy = null)
- * @method Adresse[]    findAll()
- * @method Adresse[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Chartjs|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Chartjs|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Chartjs[]    findAll()
+ * @method Chartjs[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AdresseRepository extends ServiceEntityRepository
+class ChartjsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Adresse::class);
+        parent::__construct($registry, Chartjs::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Adresse $entity, bool $flush = true): void
+    public function add(Chartjs $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -37,7 +37,7 @@ class AdresseRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Adresse $entity, bool $flush = true): void
+    public function remove(Chartjs $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -46,15 +46,15 @@ class AdresseRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Adresse[] Returns an array of Adresse objects
+    //  * @return Chartjs[] Returns an array of Chartjs objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
+            ->orderBy('c.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -63,10 +63,10 @@ class AdresseRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Adresse
+    public function findOneBySomeField($value): ?Chartjs
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

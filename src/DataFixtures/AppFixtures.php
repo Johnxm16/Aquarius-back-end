@@ -27,7 +27,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $facker = Factory::create('en_EN');
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $user = new Utilisateur();
             $hashpassword = $this->encoder->encodePassword($user, "Passer1234");
             $user->setPrenom($facker->firstName())

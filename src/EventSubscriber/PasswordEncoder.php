@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Entity\Administrateur;
 use App\Entity\Collecteur;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -29,6 +30,7 @@ final class PasswordEncoder implements EventSubscriberInterface
         return [
             KernelEvents::VIEW => ['encodePassword', EventPriorities::PRE_WRITE],
             KernelEvents::VIEW => ['encodePasswordCollecteur', EventPriorities::PRE_WRITE],
+            KernelEvents::VIEW => ['encodePasswordAdmin', EventPriorities::PRE_WRITE]
         ];
     }
 
@@ -51,6 +53,18 @@ final class PasswordEncoder implements EventSubscriberInterface
         if ($collecteur instanceof Collecteur  && $method  === Request::METHOD_POST) {
             $hash = $this->encoder->encodePassword($collecteur, $collecteur->getPassword());
             $collecteur->setPassword($hash);
+        }
+    }
+
+    public function encodePasswordAdmin(ViewEvent $event): void
+    {
+        $admin = $event->getControllerResult();
+        // dd($admin);
+        $method = $event->getRequest()->getMethod();
+
+        if ($admin instanceof Administrateur  && $method  === Request::METHOD_POST) {
+            $hash = $this->encoder->encodePassword($admin, $admin->getPassword());
+            $admin->setPassword($hash);
         }
     }
 }

@@ -14,15 +14,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *  attributes={
- *      "pagination_enabled"=true,
- *      "pagination_items_per_page"=20
- *  },
  *  normalizationContext={
  *       "groups"={"users_read"}
  * }
  * )
- * @ApiFilter(SearchFilter::class,properties={""})
+ * @ApiFilter(SearchFilter::class)
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
 class Utilisateur implements UserInterface
@@ -113,24 +109,7 @@ class Utilisateur implements UserInterface
      * @Groups({"users_read"})
      */
     private $grade;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     * @Groups({"users_read"})
-     */
-    private $nombreCollecte;
-
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"users_read"})
-     */
-    private $Matricule;
-
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     * @Groups({"users_read"})
-     */
-    private $Agence;
+ 
 
     public function __construct()
     {
@@ -355,40 +334,5 @@ class Utilisateur implements UserInterface
 
         return $this;
     }
-
-    public function getNombreCollecte(): ?float
-    {
-        return $this->nombreCollecte;
-    }
-
-    public function setNombreCollecte(?float $nombreCollecte): self
-    {
-        $this->nombreCollecte = $nombreCollecte;
-
-        return $this;
-    }
-
-    public function getMatricule(): ?string
-    {
-        return $this->Matricule;
-    }
-
-    public function setMatricule(?string $Matricule): self
-    {
-        $this->Matricule = $Matricule;
-
-        return $this;
-    }
-
-    public function getAgence(): ?string
-    {
-        return $this->Agence;
-    }
-
-    public function setAgence(?string $Agence): self
-    {
-        $this->Agence = $Agence;
-
-        return $this;
-    }
+ 
 }

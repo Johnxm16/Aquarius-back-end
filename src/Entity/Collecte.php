@@ -9,21 +9,19 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 
 /**
  * @ORM\Entity(repositoryClass=CollecteRepository::class)
  * @ApiResource(
- *  attributes={
- *      "pagination_enabled" = true,
- *      "pagination_items_per_page" = 10 
- *  },
  *  normalizationContext={
  *       "groups"={"collects_read"}
  * }
  * )
- * @ApiFilter(SearchFilter::class,properties={"categories.Libelle"})
+ * @ApiFilter(SearchFilter::class,properties={"categories.Libelle","Month"})
+ * @ApiFilter(DateFilter::class)
  */
 class Collecte
 {
@@ -31,36 +29,30 @@ class Collecte
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"collects_read","categories_read"})
+     * @Groups({"collects_read","categories_read","collecteur_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"collects_read","categories_read"})
+     * @Groups({"collects_read","collecteur_read"})
      */
     private $detailAdresse;
 
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="collectes")
-     * @Groups({"collects_read","categories_read"})
+     * @Groups({"collects_read"})
      */
     private $utilisateurs;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
-     * @Groups({"collects_read"})
+     * @ORM\Column(type="date_immutable")
+     * @Groups({"collects_read","collecteur_read"})
      */
     private $createAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @Groups({"collects_read"})
-     */
-    private $deleteDate;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="date_immutable", nullable=true)
      * @Groups({"collects_read"})
      */
     private $accoutingAt;
@@ -70,11 +62,7 @@ class Collecte
      */
     private $annulerCollecte;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="Collects")
-     * @Groups({"collects_read"})
-     */
-    private $adresse;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=Collecteur::class, inversedBy="collecte")
@@ -82,13 +70,38 @@ class Collecte
      */
     private $collecteur;
 
+
+
     /**
-     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="collectes")
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $Month;
+
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
      * @Groups({"collects_read"})
      */
-    private $categories;
+    private $collectedAt;
 
-   
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"collects_read"})
+     */
+    private $Statut;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     * @Groups({"collects_read"})
+     */
+    private $Sac = [];
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"collects_read"})
+     */
+    private $Adresse;
+
+
 
     public function __construct()
     {
@@ -137,17 +150,6 @@ class Collecte
         return $this;
     }
 
-    public function getDeleteDate(): ?\DateTimeInterface
-    {
-        return $this->deleteDate;
-    }
-
-    public function setDeleteDate(?\DateTimeInterface $deleteDate): self
-    {
-        $this->deleteDate = $deleteDate;
-
-        return $this;
-    }
 
     public function getAccoutingAt(): ?\DateTimeImmutable
     {
@@ -173,17 +175,7 @@ class Collecte
         return $this;
     }
 
-    public function getAdresse(): ?Adresse
-    {
-        return $this->adresse;
-    }
 
-    public function setAdresse(?Adresse $adresse): self
-    {
-        $this->adresse = $adresse;
-
-        return $this;
-    }
 
     public function getCollecteur(): ?Collecteur
     {
@@ -197,16 +189,65 @@ class Collecte
         return $this;
     }
 
-    public function getCategories(): ?Categorie
+
+
+    public function getMonth(): ?int
     {
-        return $this->categories;
+        return $this->Month;
     }
 
-    public function setCategories(?Categorie $categories): self
+    public function setMonth(?int $Month): self
     {
-        $this->categories = $categories;
+        $this->Month = $Month;
 
         return $this;
     }
 
+    public function getCollectedAt(): ?\DateTimeImmutable
+    {
+        return $this->collectedAt;
+    }
+
+    public function setCollectedAt(?\DateTimeImmutable $collectedAt): self
+    {
+        $this->collectedAt = $collectedAt;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->Statut;
+    }
+
+    public function setStatut(?string $Statut): self
+    {
+        $this->Statut = $Statut;
+
+        return $this;
+    }
+
+    public function getSac(): ?array
+    {
+        return $this->Sac;
+    }
+
+    public function setSac(?array $Sac): self
+    {
+        $this->Sac = $Sac;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->Adresse;
+    }
+
+    public function setAdresse(?string $Adresse): self
+    {
+        $this->Adresse = $Adresse;
+
+        return $this;
+    }
 }
