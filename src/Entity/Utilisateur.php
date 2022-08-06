@@ -32,7 +32,7 @@ class Utilisateur implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      * @Groups({"users_read","collects_read"})
      */
     private $email;

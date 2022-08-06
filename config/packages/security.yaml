@@ -73,7 +73,6 @@ security:
     - { path: ^/api/profiles, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/annuler_collectes, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/supprimer_comptes, roles: IS_AUTHENTICATED_FULLY }
-    - { path: ^/api/profiles, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/collecteurs, roles: IS_AUTHENTICATED_FULLY }
     - {
         path: ^/api/utilisateurs,
