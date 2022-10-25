@@ -74,6 +74,7 @@ class Utilisateur implements UserInterface
      */
     private $telephone;
 
+    
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"users_read"})
@@ -140,8 +141,9 @@ class Utilisateur implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->telephone; //email;
     }
+
 
     /**
      * @see UserInterface

@@ -49,6 +49,8 @@ security:
         check_path: /api/login_check # or api_login_check as defined in config/routes.yaml
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        username_path: username
+        password_path: password
     api:
       pattern: ^/api
       stateless: true
@@ -74,9 +76,9 @@ security:
     - { path: ^/api/annuler_collectes, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/supprimer_comptes, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/collecteurs, roles: IS_AUTHENTICATED_FULLY }
-    - {
-        path: ^/api/utilisateurs,
-        roles: IS_AUTHENTICATED_FULLY,
-        methods: [GET, PUT, PATH, DELETE],
-      }
+    # - {
+    #     path: ^/api/utilisateurs,
+    #     roles: IS_AUTHENTICATED_FULLY,
+    #     methods: [GET, PUT, PATH, DELETE],
+    #   }
     # - { path: ^/profile, roles: ROLE_USER }
